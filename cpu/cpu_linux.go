@@ -97,7 +97,7 @@ func finishCPUInfo(c *InfoStat) error {
 			return nil
 		}
 	}
-	c.Mhz = value/1000.0  // value is in kHz
+	c.Mhz = value / 1000.0 // value is in kHz
 	return nil
 }
 
@@ -147,7 +147,7 @@ func Info() ([]InfoStat, error) {
 		case "model name", "cpu":
 			c.ModelName = value
 			if strings.Contains(value, "POWER8") ||
-			   strings.Contains(value, "POWER7") {
+				strings.Contains(value, "POWER7") {
 				c.Model = strings.Split(value, " ")[0]
 				c.Family = "POWER"
 				c.VendorID = "IBM"
@@ -197,6 +197,10 @@ func Info() ([]InfoStat, error) {
 
 func parseStatLine(line string) (*TimesStat, error) {
 	fields := strings.Fields(line)
+
+	if len(fields) == 0 {
+		return nil, errors.New("cpu stats not processed")
+	}
 
 	if strings.HasPrefix(fields[0], "cpu") == false {
 		//		return CPUTimesStat{}, e
